@@ -1,0 +1,33 @@
+<%- include('templates/_header') %>
+<main class="container mt-5">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="card bg-dark text-white">
+                <div class="card-header">
+                    <h3 class="text-center">Chat Socket + Multer</h3>
+                </div>
+                <div id="cuerpoDelChat" class="card-body bg-white text-dark">
+
+                </div>
+                <form action="/api/photo"
+                method="post" id="formularioDelChat" class="card-footer container-fluid" enctype="multipart/form-data">
+                    <div class="row mb-2">
+                        <div class="col-12">
+                            <input type="file" class="form-control" name="archivoMensaje" id="inputFile">
+                        </div>
+                    </div>
+                    <div class="row d-flex">
+                        <div class="col-9 p-0">
+                            <input type="text" name="textoMensaje" id="inputText" class="form-control">
+                        </div>
+                        <div class="col-3 p-0">
+                            <input type="submit" value="Enviar" class="form-control btn-danger">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+<%- include('templates/_footer') %>

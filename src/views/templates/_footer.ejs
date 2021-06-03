@@ -1,0 +1,78 @@
+<footer>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/Jquery.js"></script>
+    <script src="/bootstrap 4.6/bootstrap.bundle.min.js"></script>
+
+    <!--Scripts necesarios para enviar el archivo al servidor-->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
+    
+    <script>
+        //defino mis variables
+        const socket = io();
+        //* hasta aqui
+        const _cuerpoDelChat = document.querySelector('#cuerpoDelChat');
+        const _formularioDelChat = document.querySelector('#formularioDelChat');
+        const _inputText = document.querySelector('#inputText');
+        const _inputFile = document.querySelector('#inputFile');
+
+        //evento de envio del formulario
+        formularioDelChat.addEventListener('submit', function(evento){
+            evento.preventDefault();
+            enviarMensajeAlServidor();
+            resetInputs();
+        });
+
+        //funcion para resetear ambos inputs
+        function resetInputs(){
+            _inputText.value = '';
+            _inputFile.value = '';
+        }
+
+        //funcion para enviarle el archivo al servidor
+        function enviarArchivoAlServidor(){
+            $('#formularioDelChat').ajaxSubmit({
+
+                error: function(xhr) {
+                status('Error: ' + xhr.status);
+                },
+
+                success: function(response) {
+                $("#status").empty().text(response);
+                    console.log(response);
+                }
+            });
+        }
+
+        //funcion para enviarle mensajes al servidor
+        function enviarMensajeAlServidor(){
+            let nombreSocketReceptor = 'socketServer';
+            let mensajeTexto = 'no-text';
+            let nombreArchivo = 'no-file';
+
+            if(_inputFile.files[0]!=undefined){
+                nombreArchivo = _inputFile.files[0].name;
+                enviarArchivoAlServidor();
+            }
+            if(_inputText.value != ''){
+                mensajeTexto = _inputText.value;
+            }
+
+            console.log('mensajeTexto = '+mensajeTexto);
+            console.log('nombreArchivo = '+nombreArchivo)
+
+            socket.emit(nombreSocketReceptor, mensajeTexto, nombreArchivo);
+        }
+
+        //operacion para escuchar mensajes del servidor
+        let nombreSocketEmisor = 'socketClient';
+        socket.on(nombreSocketEmisor, function(mensajeTexto, nombreArchivo){
+
+            console.log('El Texto enviado Por el Servidor es: '+mensajeTexto+' | el nombre del archivo enviado Por el Servidor es: '+nombreArchivo);
+
+        });
+
+    </script>
+</footer>
+</body>
+</html>
